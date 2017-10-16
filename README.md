@@ -1,2 +1,2 @@
 # jsonschema
-json schema generator
+json-schema生成工具

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>JSONSchema 生成工具</title>
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <div class="row clearfix">
+        <div class="col-md-12 column">
+            <div class="page-header">
+                <h1>
+                    JSON-Schema 生成工具<small>  生成基本scheme</small>
+                </h1>
+            </div>
+        </div>
+    </div>
+    <div class="row clearfix">
+        <div class="col-md-5 column">
+            <div class="form-group">
+                <label>JSON内容:</label>
+                <textarea class="form-control" rows="25" id="jsonContext"></textarea>
+            </div>
+        </div>
+
+        <div class="col-md-2 column">
+            <div class="col-md-4 column">
+                <button type="button" class="btn btn-default btn-primary " id="gen_btn" style="margin-top: 200px; width: 130px">生成</button>
+                <button type="button" class="btn btn-default btn-warning " id="clean_btn" style="margin-top: 50px; width: 130px">清空</button>
+            </div>
+        </div>
+
+        <div class="col-md-5 column">
+            <div class="form-group">
+                <label>Schema内容:</label>
+                <textarea class="form-control" rows="25" id="schemaContext"></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function(){
+        $("#gen_btn").click(
+            function(){
+                var jsonContext = $("#jsonContext").val();
+                if(typeof jsonContext == "string"){
+                    try {
+                        var obj = JSON.parse(jsonContext);
+                        if(jsonContext.indexOf('{')>-1){
+                            $.ajax({
+                                type: "POST",
+                                url: "schema.php",
+                                data: jsonContext,
+                                contentType: "application/json; charset=UTF-8",
+                                success: function (result) {
+                                    $("#schemaContext").val(JSON.stringify(result,null,4));
+                                }
+                            })
+                        }else{
+                            alert("JSON数据格式不正确!!!");
+                        }
+                    } catch(e) {
+                        alert("JSON数据格式不正确!!!");
+                    }
+                }
+        });
+        $("#clean_btn").click(function(){
+            $("#jsonContext").val(null);
+            $("#schemaContext").val(null);
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+{
+  "require": {
+    "evaisse/php-json-schema-generator": "2.0.6"
+  }
+}
